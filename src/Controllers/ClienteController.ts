@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 
 export class ClienteController {
 
-  async create(req: Request, res: Response) {
+  async cadastrarCliente(req: Request, res: Response) {
     const { nomeCompleto, Cpf, isAtivo} = req.body;
     const { idColaborador } = req.params
     
@@ -33,6 +33,21 @@ export class ClienteController {
       return res.status(500).json({mensagem: 'Ocorreu um erro na criacao de cliente'})
     }    
   } 
+  
+  async listarClientes(req: Request, res: Response){
+    try{
+        const clientes = await clienteRepository.find()
+
+        return res.status(200).json(clientes)
+
+    }   catch (error) {
+        return res.status(500).json({
+            message: 'internal server error'
+        })
+    }
+}
+
+
 
 
 }
