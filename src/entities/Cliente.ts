@@ -1,5 +1,5 @@
 import { Colaborador } from './Colaborador';
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { EnderecoCliente } from './EnderecoCliente';
 
 @Entity('clientes')

@@ -1,22 +1,37 @@
+import { colaboradorRepository } from './../repositories/colaboradorRepository';
+import { clienteRepository } from './../repositories/clienteRepository';
 import { Request, Response } from "express";
 
 export class ClienteController {
 
   async create(req: Request, res: Response) {
-    const { dados } = req.body;
-
-    if (!dados) {
-      return res.status(400).json({mensagem: 'Dados inválidos.'});
-    }
+    const { nomeCompleto, Cpf, isAtivo} = req.body;
+    const { idColaborador } = req.params
+    
+    console.log({ nomeCompleto, Cpf, isAtivo, idColaborador });
 
     try {
+
+      const colaborador = await colaboradorRepository.findOneBy({ uuid: idColaborador })
+      if(!colaborador) {
+        return res.status(404).json({message: "Colaborador não existe"})
+      }
+      
+      const novoCliente = clienteRepository.create({
+        nomeCompleto,
+        Cpf,
+        isAtivo,
+        colaborador
+      })
+
+      await clienteRepository.save(novoCliente)
+
+      return res.status(201).json(novoCliente)
 
     } catch (error) {
       console.log(error);
       return res.status(500).json({mensagem: 'Ocorreu um erro na criacao de cliente'})
-    }
-    return res.json("Tudo certo em ClienteController")
-    
+    }    
   } 
 
 
